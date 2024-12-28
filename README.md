@@ -41,34 +41,3 @@ Controller Layer: Manages incoming HTTP requests and directs them to the appropr
 Service Layer: Contains the core business logic for managing users and generating JWT tokens.
 Repository Layer: Interacts with the database, using Spring Data JPA to perform CRUD operations on the UserModel.
 Additionally, Spring Security is used for securing the endpoints, and the JWT (JSON Web Token) design pattern is used for user authentication.
-
-Installation and Setup
-Clone the repository:
-
-bash
-Copiar código
-git clone https://github.com/yourusername/users-auth-api.git
-cd users-auth-api
-Set up the required dependencies:
-
-Ensure you have Java 17+ and Maven installed.
-
-Configure the application.properties or application.yml with the necessary database settings (MySQL or other preferred database).
-
-Add the JWT secret key to the properties file:
-
-properties
-Copiar código
-jwt.secret=your-secret-key
-Build and run the application:
-
-bash
-Copiar código
-./mvnw spring-boot:run
-Access the API documentation at /swagger-ui.html once the application is running.
-
-Security
-The API uses Spring Security for authenticating and authorizing users. After logging in, the user receives a JWT token, which must be included in the Authorization header for accessing protected endpoints.
-
-Conclusion
-This project is a simple but effective user authentication system with basic user management and secure token-based authentication. It provides a robust foundation for building secure APIs that require user authentication and authorization.
