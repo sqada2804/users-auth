@@ -43,7 +43,6 @@ public class UserService implements IUserService {
     private UserModel updateFields(UserModel existingUser, UpdateInfoRequest userRequest){
         existingUser.setName(userRequest.getName());
         existingUser.setEmail(userRequest.getEmail());
-        existingUser.setPassword(userRequest.getPassword());
         return existingUser;
 
     }

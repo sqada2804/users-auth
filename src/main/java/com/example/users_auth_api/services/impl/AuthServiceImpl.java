@@ -42,18 +42,11 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public TokenResponse loginUser(LoginRequest loginRequest) {
-        return Optional.of(loginRequest)
-                .map(this::authenticate)
-                .map(authenticatedUser -> jwtService.generateToken(authenticatedUser.getUserId()))
+        return Optional.of(loginRequest.getEmail())
+                .map(userRepository::findByEmail)
+                .filter(user -> passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword()))
+                .map(user -> jwtService.generateToken(user.get().getUserId()))
                 .orElseThrow(() -> new RuntimeException("Error login User"));
-    }
-
-    private UserModel authenticate(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return (UserModel) authentication.getPrincipal();
     }
 
     private UserModel mapToEntity(UserRequest userRequest) {
