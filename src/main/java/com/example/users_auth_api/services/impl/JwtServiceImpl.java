@@ -32,8 +32,7 @@ public class JwtServiceImpl implements IJwtService {
                 .compact();
 
         return TokenResponse.builder()
-                .accessToken(token)
-                .build();
+                .accessToken(token).build();
     }
 
     @Override

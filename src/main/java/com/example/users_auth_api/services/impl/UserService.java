@@ -1,6 +1,7 @@
 package com.example.users_auth_api.services.impl;
 
 import com.example.users_auth_api.commons.entities.UserModel;
+import com.example.users_auth_api.dtos.UpdateInfoRequest;
 import com.example.users_auth_api.dtos.UserRequest;
 import com.example.users_auth_api.repository.UserRepository;
 import com.example.users_auth_api.services.IUserService;
@@ -24,7 +25,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateUser(UserRequest userRequest, Long userId) {
+    public void updateUser(UpdateInfoRequest userRequest, Long userId) {
         Optional.of(userId)
                 .map(this::getUser)
                 .map(existingUser -> updateFields(existingUser, userRequest))
@@ -39,7 +40,7 @@ public class UserService implements IUserService {
                 .ifPresent(userRepository::delete);
     }
 
-    private UserModel updateFields(UserModel existingUser, UserRequest userRequest){
+    private UserModel updateFields(UserModel existingUser, UpdateInfoRequest userRequest){
         existingUser.setName(userRequest.getName());
         existingUser.setEmail(userRequest.getEmail());
         existingUser.setPassword(userRequest.getPassword());

@@ -1,10 +1,16 @@
 package com.example.users_auth_api.services.impl;
 
 import com.example.users_auth_api.commons.entities.UserModel;
+import com.example.users_auth_api.dtos.LoginRequest;
 import com.example.users_auth_api.dtos.TokenResponse;
 import com.example.users_auth_api.dtos.UserRequest;
 import com.example.users_auth_api.repository.UserRepository;
 import com.example.users_auth_api.services.IAuthService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +20,14 @@ public class AuthServiceImpl implements IAuthService {
 
     private final UserRepository userRepository;
     private final JwtServiceImpl jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(UserRepository userRepository, JwtServiceImpl jwtService) {
+    public AuthServiceImpl(UserRepository userRepository, JwtServiceImpl jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -30,10 +40,26 @@ public class AuthServiceImpl implements IAuthService {
 
     }
 
-    private UserModel mapToEntity( UserRequest userRequest) {
+    @Override
+    public TokenResponse loginUser(LoginRequest loginRequest) {
+        return Optional.of(loginRequest)
+                .map(this::authenticate)
+                .map(authenticatedUser -> jwtService.generateToken(authenticatedUser.getUserId()))
+                .orElseThrow(() -> new RuntimeException("Error login User"));
+    }
+
+    private UserModel authenticate(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return (UserModel) authentication.getPrincipal();
+    }
+
+    private UserModel mapToEntity(UserRequest userRequest) {
         return UserModel.builder()
                 .email(userRequest.getEmail())
-                .password(userRequest.getPassword())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
                 .name(userRequest.getName())
                 .role("USER")
                 .build();

@@ -2,7 +2,7 @@ package com.example.users_auth_api.controllers.impl;
 
 import com.example.users_auth_api.commons.entities.UserModel;
 import com.example.users_auth_api.controllers.IUserApi;
-import com.example.users_auth_api.dtos.UserRequest;
+import com.example.users_auth_api.dtos.UpdateInfoRequest;
 import com.example.users_auth_api.services.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,7 @@ public class UserController implements IUserApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateUser(UserRequest userRequest, Long userId) {
+    public ResponseEntity<Void> updateUser(UpdateInfoRequest userRequest, Long userId) {
         userService.updateUser(userRequest, userId);
         return ResponseEntity.noContent().build();
     }
