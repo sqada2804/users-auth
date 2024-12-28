@@ -91,9 +91,30 @@ The API uses a MySQL database with the following schema:
 - **JWT Secret**: The secret used for signing JWT tokens. Can be configured in the `application.properties` file.
 - **Database Configuration**: Database connection details (URL, username, password) should be set in the `application.properties` file.
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/auth_db
-spring.datasource.username=root
-spring.datasource.password=root
+## JWT Token Expiry
+Tokens have an expiration time set to the longest possible duration (Long.MAX_VALUE). You can modify the expiration time by editing the JwtServiceImpl class according to your needs.
 
-jwt.secret=your_jwt_secret_key
+## How to Clone and Run
+
+### Prerequisites
+
+- **JDK 17 or higher**.
+- **MySQL (or any other relational database)**.
+- **Maven** for dependency management.
+
+### Steps to Clone and Run
+
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/yourusername/users-auth-api.git
+    ```
+
+2. **Configure the database connection**:
+   - Open the `src/main/resources/application.properties` file.
+   - Set your MySQL database connection parameters (`url`, `username`, `password`) and JWT secret key.
+   - Example for MySQL database:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/auth_db
+   spring.datasource.username=root
+   spring.datasource.password=root
+   jwt.secret=your_jwt_secret_key
