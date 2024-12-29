@@ -10,7 +10,7 @@ The Users Authentication API is designed to allow the registration, login, and m
 - **Spring Security**: For authentication and authorization.
 - **JWT (JSON Web Token)**: For securing the API and handling user sessions.
 - **JPA (Java Persistence API)**: For database access.
-- **MySQL**: The relational database used to store user information.
+- **PostgreSQL**: The object-relational database used to store user information.
 
 ## Features
 
